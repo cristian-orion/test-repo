@@ -2,7 +2,7 @@ name: Testing cron
 
 on:
   schedule:
-    - cron: '42 15 * * *'
+    - cron: '46 15 * * *'
 
 jobs:
   call-endpoint:
