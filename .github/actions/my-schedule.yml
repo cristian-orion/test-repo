@@ -1,0 +1,13 @@
+name: Call Endpoint Every 10 Seconds
+
+on:
+  schedule:
+    - cron: "*/30 * * * * *" # Runs every 10 seconds
+
+jobs:
+  call-endpoint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Endpoint
+        run: curl https://d9c0-149-19-168-214.ngrok-free.app
