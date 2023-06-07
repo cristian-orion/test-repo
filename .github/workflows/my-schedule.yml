@@ -2,7 +2,7 @@ name: Call Endpoint Every 10 Seconds
 
 on:
   schedule:
-    - cron: "*/30 * * * * *" # Runs every 10 seconds
+    - cron: '* * * * *' # Runs every 10 seconds
 
 jobs:
   call-endpoint:
