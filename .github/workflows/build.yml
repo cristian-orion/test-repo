@@ -11,4 +11,4 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v3
-      - run: npm run test:fail
+      - run: npm run test:ok
