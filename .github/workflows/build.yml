@@ -1,0 +1,14 @@
+# Builds and publishes docker images to a docker registry.
+name: 🐳 Build
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run test:fail

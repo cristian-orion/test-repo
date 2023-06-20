@@ -1,0 +1,21 @@
+{
+  "name": "test-repo",
+  "version": "1.0.0",
+  "description": "New version updated",
+  "main": "index.js",
+  "scripts": {
+    "test:fail": "echo \"this test will fail\" && exit 1",
+    "test:ok": "echo \"this test will succeed\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristian-orion/test-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristian-orion/test-repo/issues"
+  },
+  "homepage": "https://github.com/cristian-orion/test-repo#readme"
+}
