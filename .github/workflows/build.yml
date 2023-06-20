@@ -12,9 +12,45 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm run test:ok
-  run-e2e-tests:
+  deploy-to-dev:
     needs: build
-    name: Run end-to-end tests
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run test:ok
+  run-e2e-tests-dev:
+    needs: deploy-to-dev
+    name: Run end-to-end tests on dev
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run test:ok
+  deploy-to-stg:
+    needs: run-e2e-tests-dev
+    name: Deploy to stg
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run test:ok
+  test-on-stg:
+    needs: deploy-to-stg
+    name: Deploy to stg
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run test:ok
+  notify-ready-to-prod:
+    needs: test-on-stg
+    name: Notify ready to prod
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 2
