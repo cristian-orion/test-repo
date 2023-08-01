@@ -27,6 +27,37 @@ const monitorPortal = async () => {
         // TODO: If the healcheck succeeds, we might want to cancel any existing alert.
         return;
     }
+
+    // Healcheck failed, create alert
+    sendAlert();
+};
+
+const sendAlert = async () => {
+    const url = 'https://api.opsgenie.com/v2/alerts';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'GenieKey xxx'
+        },
+        body: JSON.stringify({
+            "message": "Monitoring: Healthcheck failed",
+            "description": "Healthcheck failed to query",
+            "tags": ["my-app", "app-down"],
+            "details": { "key1": "value1" },
+            "entity": "my-app",
+            "priority": "P3"
+        })
+    };
+
+    try {
+        const res = await fetch(url, options);
+        console.log('created ok');
+        const j = await res.json();
+        console.log('payload', j);
+    } catch (error) {
+        console.log('Cannot create alert', error);
+    }
 };
 
 monitorPortal();
