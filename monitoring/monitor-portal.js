@@ -20,8 +20,8 @@ const callHealthcheck = async (healthcheckUrl) => {
     }
 };
 
-const monitorPortal = async () => {
-    const error = await callHealthcheck('https://app.dev.lilyai.net/public-env/public-env.js');
+const monitorPortal = async (healchCheckUrl, apiKey) => {
+    const error = await callHealthcheck(healchCheckUrl);
     if (!error) {
         console.log("Healthcheck ok");
         // TODO: If the healcheck succeeds, we might want to cancel any existing alert.
@@ -29,16 +29,16 @@ const monitorPortal = async () => {
     }
 
     // Healcheck failed, create alert
-    sendAlert();
+    sendAlert(apiKey);
 };
 
-const sendAlert = async () => {
+const sendAlert = async (apiKey) => {
     const url = 'https://api.opsgenie.com/v2/alerts';
     const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'GenieKey xxx'
+            'Authorization': `GenieKey ${apiKey}`
         },
         body: JSON.stringify({
             "message": "Monitoring: Healthcheck failed",
@@ -60,4 +60,8 @@ const sendAlert = async () => {
     }
 };
 
-monitorPortal();
+// node monitor/monitor-portal.js ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
+(() => {
+    const [, , healchCheckUrl = "", alertApiKey = ""] = process.argv;
+    monitorPortal(healchCheckUrl, alertApiKey);
+})();
