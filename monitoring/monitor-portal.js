@@ -11,14 +11,14 @@ const callHealthcheck = async (healthcheckUrl) => {
         const data = await fetch(healthcheckUrl);
         if (!isSuccessStatusCode(data.status)) {
             // Getting the healt-check returned bad status code.
-            console.log("Cannot get about data, endpoint in bad status:", data.status, data.statusText);
+            console.log('Cannot get about data, endpoint in bad status:', data.status, data.statusText);
             return new Error(`Healthcheck endpoint returned status ${data.status}: ${data.statusText}`);
         }
         // Success
         return null;
     } catch (error) {
         // Calling health-check endpoint failed. Maybe bad gateway error or server unavailable.
-        console.log("Health-check failed:", error);
+        console.log('Health-check failed:', error);
         return error;
     }
 };
@@ -26,7 +26,7 @@ const callHealthcheck = async (healthcheckUrl) => {
 const monitorPortal = async (healthCheckUrl) => {
     const error = await callHealthcheck(healthCheckUrl);
     if (!error) {
-        console.log("Health check ok");
+        console.log('Health check ok');
         // TODO: If the health check succeeds, we might want to cancel any existing alert.
         return;
     }
@@ -36,7 +36,7 @@ const monitorPortal = async (healthCheckUrl) => {
 };
 
 const sendAlert = async () => {
-    const [, , _ = "", apiKey = ""] = process.argv;
+    const [, , _ = '', apiKey = ''] = process.argv;
 
     const url = 'https://api.opsgenie.com/v2/alerts';
     const options = {
@@ -46,13 +46,13 @@ const sendAlert = async () => {
             'Authorization': `GenieKey ${apiKey}`
         },
         body: JSON.stringify({
-            "alias": "lilyapp-portal-dev-app-down", // Key for deduplication
-            "message": "(dev) lilyapp-portal: Healthcheck failed",
-            "description": "The healthcheck failed for `lilyapp-portal` in `dev` to be querried by the monitoring cron job.",
-            "tags": ["lilyapp-portal", "app-down"],
-            "details": { "reporter": "ga-monitoring-cron" },
-            "entity": "lilyapp-portal",
-            "priority": "P3"
+            'alias': 'lilyapp-portal-dev-app-down', // Key for deduplication
+            'message': '(dev) lilyapp-portal: Healthcheck failed',
+            'description': 'The healthcheck failed for `lilyapp-portal` in `dev` to be querried by the monitoring cron job.',
+            'tags': ['lilyapp-portal', 'app-down'],
+            'details': { 'reporter': 'ga-monitoring-cron' },
+            'entity': 'lilyapp-portal',
+            'priority': 'P3'
         })
     };
 
@@ -67,6 +67,6 @@ const sendAlert = async () => {
 };
 
 (() => {
-    const [, , healthCheckUrl = ""] = process.argv;
+    const [, , healthCheckUrl = ''] = process.argv;
     monitorPortal(healthCheckUrl);
 })();
