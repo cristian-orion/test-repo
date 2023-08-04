@@ -58,14 +58,12 @@ const sendAlert = async () => {
         })
     };
 
-    try {
-        const res = await fetch(url, options);
-        console.log('created ok');
-        const j = await res.json();
-        console.log('payload', j);
-    } catch (error) {
-        console.log('Cannot create alert', error);
+    const res = await fetch(url, options);
+    if (!isSuccessStatusCode(res.status)) {
+        throw new Error(`Alert creation failed with status: ${res.status}, ${res.statusText}.`);
     }
+    const alertDetails = await res.json();
+    console.log('alert created', alertDetails);
 };
 
 (() => {
