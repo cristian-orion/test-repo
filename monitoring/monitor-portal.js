@@ -41,11 +41,11 @@ const sendAlert = async (apiKey) => {
             'Authorization': `GenieKey ${apiKey}`
         },
         body: JSON.stringify({
-            "message": "Monitoring: Healthcheck failed",
-            "description": "Healthcheck failed to query",
-            "tags": ["my-app", "app-down"],
-            "details": { "key1": "value1" },
-            "entity": "my-app",
+            "message": "lilyapp-portal: Healthcheck failed",
+            "description": "The healthcheck failed to be querried by the monitoring cron job.",
+            "tags": ["lilyapp-portal", "app-down"],
+            "details": { "reporter": "ga-monitoring-cron" },
+            "entity": "lilyapp-portal",
             "priority": "P3"
         })
     };
