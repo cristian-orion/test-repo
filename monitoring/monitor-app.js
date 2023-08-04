@@ -1,7 +1,7 @@
 // Checks an app's healthcheck and if it fails an alert in opsgenie is created.
 //
 // Usage (in github actions):
-// node monitor/monitor-app.js lilyapp-portal development ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
+// node monitoring/monitor-app.js lilyapp-portal development ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
 
 const isSuccessStatusCode = (statusCode) => {
     return statusCode >= 200 && statusCode <= 299;
