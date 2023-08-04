@@ -10,12 +10,15 @@ jobs:
       matrix:
         include:
           - environment: development
+            priority: P5
           - environment: staging
+            priority: P4
           - environment: production
+            priority: P3
     runs-on: ubuntu-latest
     environment: ${{matrix.environment}}
     steps:
       - uses: actions/checkout@v3
       - name: Monitor Health Check
         run: |
-          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{matrix.environment}}" "${{vars.HEALTH_CHECK_URL}}" "${{secrets.OPSGENIE_API_KEY}}"
+          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{matrix.environment}}" "${{matrix.priority}}" "${{vars.HEALTH_CHECK_URL}}" "${{secrets.OPSGENIE_API_KEY}}"

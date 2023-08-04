@@ -1,7 +1,8 @@
 // Checks an app's healthcheck and if it fails an alert in opsgenie is created.
 //
 // Usage (in github actions):
-// node monitoring/monitor-app.js lilyapp-portal development ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
+// node monitoring/monitor-app.js <APP-NAME> <APP-ENV> <APP-PRIORITY> <HEALTH-CHECK-URL> <OPSGENIE-API-KEY>
+// node monitoring/monitor-app.js lilyapp-portal development P3 ${{vars.HEALTHCHECK_URL}} ${{vars.OPSGENIE_API_KEY}}
 
 const isSuccessStatusCode = (statusCode) => {
     return statusCode >= 200 && statusCode <= 299;
@@ -38,7 +39,7 @@ const monitorHealthCheck = async (healthCheckUrl) => {
 };
 
 const sendAlert = async () => {
-    const [, , appName = '', appEnv = '', healthCheckUrl = '', apiKey = ''] = process.argv;
+    const [, , appName = '', appEnv = '', priority = '', healthCheckUrl = '', apiKey = ''] = process.argv;
 
     const url = 'https://api.opsgenie.com/v2/alerts';
     const options = {
@@ -54,7 +55,7 @@ const sendAlert = async () => {
             'tags': [appName, 'app-down'],
             'details': { 'reporter': 'ga-monitoring-cron' },
             'entity': appName,
-            'priority': 'P3'
+            priority,
         })
     };
 
@@ -67,6 +68,6 @@ const sendAlert = async () => {
 };
 
 (() => {
-    const [, , appName = '', appEnv = '', healthCheckUrl = '', apiKey = ''] = process.argv;
+    const [, , appName = '', appEnv = '', priority = '', healthCheckUrl = '', apiKey = ''] = process.argv;
     monitorHealthCheck(healthCheckUrl);
 })();
