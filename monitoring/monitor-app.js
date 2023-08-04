@@ -69,6 +69,6 @@ const sendAlert = async () => {
 };
 
 (() => {
-    const [, , healthCheckUrl = ''] = process.argv;
+    const [, , appName = '', appEnv = '', healthCheckUrl = '', apiKey = ''] = process.argv;
     monitorPortal(healthCheckUrl);
 })();
