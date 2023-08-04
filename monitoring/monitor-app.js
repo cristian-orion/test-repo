@@ -25,7 +25,7 @@ const callHealthcheck = async (healthcheckUrl) => {
     }
 };
 
-const monitorPortal = async (healthCheckUrl) => {
+const monitorHealthCheck = async (healthCheckUrl) => {
     const error = await callHealthcheck(healthCheckUrl);
     if (!error) {
         console.log('Health check ok');
@@ -68,5 +68,5 @@ const sendAlert = async () => {
 
 (() => {
     const [, , appName = '', appEnv = '', healthCheckUrl = '', apiKey = ''] = process.argv;
-    monitorPortal(healthCheckUrl);
+    monitorHealthCheck(healthCheckUrl);
 })();
