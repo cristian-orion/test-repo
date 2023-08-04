@@ -14,4 +14,4 @@ jobs:
         run: |
           pwd
           ls -lha
-          node ${{github.workspace}}/monitoring/monitor-portal.js "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
+          node ${{github.workspace}}/monitoring/monitor-app.js "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"

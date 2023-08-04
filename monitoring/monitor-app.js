@@ -1,5 +1,7 @@
-// Checks an app for
-// node monitor/monitor-portal.js ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
+// Checks an app's healthcheck and if it fails an alert in opsgenie is created.
+//
+// Usage (in github actions):
+// node monitor/monitor-app.js lilyapp-portal development ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
 
 const isSuccessStatusCode = (statusCode) => {
     return statusCode >= 200 && statusCode <= 299;
@@ -36,7 +38,7 @@ const monitorPortal = async (healthCheckUrl) => {
 };
 
 const sendAlert = async () => {
-    const [, , _ = '', apiKey = ''] = process.argv;
+    const [, , appName = '', appEnv = '', healthCheckUrl = '', apiKey = ''] = process.argv;
 
     const url = 'https://api.opsgenie.com/v2/alerts';
     const options = {
@@ -46,12 +48,12 @@ const sendAlert = async () => {
             'Authorization': `GenieKey ${apiKey}`
         },
         body: JSON.stringify({
-            'alias': 'lilyapp-portal-dev-app-down', // Key for deduplication
-            'message': '(dev) lilyapp-portal: Healthcheck failed',
-            'description': 'The healthcheck failed for `lilyapp-portal` in `dev` to be querried by the monitoring cron job.',
-            'tags': ['lilyapp-portal', 'app-down'],
+            'alias': `${appName}-${appEnv}-app-down`, // Key for deduplication
+            'message': `(${appEnv}) ${appName}: Healthcheck failed`,
+            'description': `The healthcheck failed for ${appName} in ${appEnv} to be querried by the monitoring cron job.`,
+            'tags': [appName, 'app-down'],
             'details': { 'reporter': 'ga-monitoring-cron' },
-            'entity': 'lilyapp-portal',
+            'entity': appName,
             'priority': 'P3'
         })
     };
