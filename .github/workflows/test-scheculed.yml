@@ -2,7 +2,7 @@ name: Testing cron
 
 on:
   schedule:
-    - cron: '*/7 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   call-endpoint:
@@ -10,4 +10,4 @@ jobs:
 
     steps:
       - name: Call Endpoint
-        run: curl https://d9c0-149-19-168-214.ngrok-free.app
+        run: node ${{github.workspace}}/monitoring/monitor-portal.js "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
