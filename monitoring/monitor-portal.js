@@ -1,3 +1,6 @@
+// Checks an app for
+// node monitor/monitor-portal.js ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
+
 const isSuccessStatusCode = (statusCode) => {
     return statusCode >= 200 && statusCode <= 299;
 };
@@ -14,25 +17,27 @@ const callHealthcheck = async (healthcheckUrl) => {
         // Success
         return null;
     } catch (error) {
-        // Calling healch-check endpoint failed. Maybe bad gateway error or server unavailable.
-        console.log("Healcheck failed:", error);
+        // Calling health-check endpoint failed. Maybe bad gateway error or server unavailable.
+        console.log("Health-check failed:", error);
         return error;
     }
 };
 
-const monitorPortal = async (healchCheckUrl, apiKey) => {
-    const error = await callHealthcheck(healchCheckUrl);
+const monitorPortal = async (healthCheckUrl) => {
+    const error = await callHealthcheck(healthCheckUrl);
     if (!error) {
-        console.log("Healthcheck ok");
-        // TODO: If the healcheck succeeds, we might want to cancel any existing alert.
+        console.log("Health check ok");
+        // TODO: If the health check succeeds, we might want to cancel any existing alert.
         return;
     }
 
-    // Healcheck failed, create alert
-    sendAlert(apiKey);
+    // Health-check failed, create alert
+    sendAlert();
 };
 
-const sendAlert = async (apiKey) => {
+const sendAlert = async () => {
+    const [, , _ = "", apiKey = ""] = process.argv;
+
     const url = 'https://api.opsgenie.com/v2/alerts';
     const options = {
         method: 'POST',
@@ -61,8 +66,7 @@ const sendAlert = async (apiKey) => {
     }
 };
 
-// node monitor/monitor-portal.js ${{vars.HEALTHCHECK_URL}} ${{vars.GENIE_KEY}}
 (() => {
-    const [, , healchCheckUrl = "", alertApiKey = ""] = process.argv;
-    monitorPortal(healchCheckUrl, alertApiKey);
+    const [, , healthCheckUrl = ""] = process.argv;
+    monitorPortal(healthCheckUrl);
 })();
