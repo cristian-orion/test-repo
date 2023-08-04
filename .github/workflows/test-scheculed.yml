@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Call Endpoint
         run: |
-          node ${{github.workspace}}/monitoring/monitor-app.js test-repo ${{github.environment}} "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
+          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{github.environment}}" "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
 
   monitor-health-check-stg:
     runs-on: ubuntu-latest
@@ -21,4 +21,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Call Endpoint
         run: |
-          node ${{github.workspace}}/monitoring/monitor-app.js test-repo ${{github.environment}} "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
+          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{github.environment}}" "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
