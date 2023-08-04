@@ -5,20 +5,17 @@ on:
     - cron: '*/5 * * * *'
 
 jobs:
-  monitor-health-check-dev:
+  monitor-health-check:
+    strategy:
+      matrix:
+        include:
+          - environment: development
+          - environment: staging
+          - environment: production
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{matrix.environment}}
     steps:
       - uses: actions/checkout@v3
       - name: Call Endpoint
         run: |
-          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{github.environment}}" "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
-
-  monitor-health-check-stg:
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - uses: actions/checkout@v3
-      - name: Call Endpoint
-        run: |
-          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{github.environment}}" "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
+          node ${{github.workspace}}/monitoring/monitor-app.js test-repo "${{matrix.environment}}" "${{vars.HEALTHCHECK_URL}}" "${{secrets.GENIE_KEY}}"
